@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
+
 public class ConnectionDB {
     static Properties readeConfiguaration (String filename){
         Properties properties = new Properties();
