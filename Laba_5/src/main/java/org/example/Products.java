@@ -17,7 +17,7 @@ public class Products {
         this.expiration_date = expiration_date;
     }
     static public Products productsFromDB(int id_product)  throws Exception {
-        String configFile="D:\\java\\Laba_5\\config.properties";
+        String configFile="D:\\java\\Laba_5\\src\\main\\resources\\config.properties";
 
         try(Connection connection = ConnectionDB.getConnection(configFile);
             Statement statement = connection.createStatement();

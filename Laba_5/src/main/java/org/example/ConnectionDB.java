@@ -20,6 +20,6 @@ public class ConnectionDB {
 
     public static Connection getConnection(String filename) throws SQLException{
         Properties properties = readeConfiguaration(filename);
-        return DriverManager.getConnection(properties.getProperty("jdbc:postgresql://localhost:5432/Cafe?currentSchema=\"Cafe\""),properties.getProperty("username"),properties.getProperty("password"));
+        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/Cafe",properties.getProperty("username"),properties.getProperty("password"));
     }
 }

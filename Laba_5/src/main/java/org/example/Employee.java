@@ -17,7 +17,7 @@ public class Employee extends Person {
     }
 
     static public Employee employeeFromDB(int id) throws SQLException {
-        String configFile="D:\\java\\Laba_5\\config.properties";
+        String configFile="D:\\java\\Laba_5\\src\\main\\resources\\config.properties";
         try(Connection connection = ConnectionDB.getConnection(configFile);
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM employee;")){

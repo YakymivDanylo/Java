@@ -22,4 +22,11 @@ public class Order {
         this.total_price = total_price;
     }
 
+    @Override
+    public String toString() {
+        return employee.toString() + " " + dishesAndDrinks.toString() + " " + data_order + " " + total_price;
+    }
+//    public String getListOfDishesAndDrinks() {
+//        return dishesAndDrinks.toString();
+//    }
 }

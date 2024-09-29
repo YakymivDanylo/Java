@@ -17,10 +17,10 @@ public class AdminDAO {
     public AdminDAO(AdminDTO admin) {this.admin = admin;}
 
     public void addProducts(Products product){
-        String configFile = "D:\\java\\Laba_5\\config.properties";
+        String configFile = "D:\\java\\Laba_5\\src\\main\\resources\\config.properties";
         try{
             Connection connection = ConnectionDB.getConnection(configFile);
-            String query = "INSERT INTO Products(name_product,expiration_date) VALUES (?,?,?)";
+            String query = "INSERT INTO \"Cafe\".\"Products\" (name_product,expiration_date) VALUES (?,?)";
 
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             try{
@@ -42,10 +42,10 @@ public class AdminDAO {
     }
 
     public void addEmployee(Employee employee){
-        String configFile = "D:\\java\\Laba_5\\config.properties";
+        String configFile = "D:\\java\\Laba_5\\src\\main\\resources\\config.properties";
         try{
                 Connection connection = ConnectionDB.getConnection(configFile);
-                String query = "INSERT INTO Employee (name_employee,surname_employee,last_name_employee, birth_date_employee) VALUES (?,?,?,?)";
+                String query = "INSERT INTO \"Cafe\".\"Employee\" (name_employee,surname_employee,last_name_employee, birth_date_employee) VALUES (?,?,?,?)";
 
                 PreparedStatement preparedStatement = connection.prepareStatement(query);
                 try{
@@ -70,10 +70,10 @@ public class AdminDAO {
     }
 
     public void addDishesDrinks(Dishes_and_drinks listOfDishesAndDrinks){
-        String configFile = "D:\\java\\Laba_5\\config.properties";
+        String configFile = "D:\\java\\Laba_5\\src\\main\\resources\\config.properties";
         try{
             Connection connection = ConnectionDB.getConnection(configFile);
-            String query = "INSERT INTO List_of_dishes_and_drinks(type_of_dishes_and_drinks,name_of_dishes_and_drinks,expiration_date_of_dishes_and_drinks,price) VALUES (?,?,?,?)";
+            String query = "INSERT INTO \"Cafe\".\"List_of_dishes_and_drinks\" (type_of_dishes_and_drinks,name_of_dishes_and_drinks,expiration_date_of_dishes_and_drinks,price) VALUES (?,?,?,?)";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
 
             try{

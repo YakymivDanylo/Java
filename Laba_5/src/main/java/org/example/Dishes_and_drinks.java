@@ -22,7 +22,7 @@ public class Dishes_and_drinks {
     }
 
     static public Dishes_and_drinks listFromDB(int id_dishes_drinks) throws Exception{
-        String configFile = "D:\\\\java\\\\Laba_5\\\\config.properties";
+        String configFile = "D:\\java\\Laba_5\\src\\main\\resources\\config.properties";
         try(Connection connection = ConnectionDB.getConnection(configFile);
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM 'List_of_dishes_and_drinks'")){
@@ -42,5 +42,9 @@ public class Dishes_and_drinks {
             throw new Exception("Problem with connection to DB", e);
         }
         return null;
+    }
+    @Override
+    public String toString() {
+        return id_dishes_drinks + " " + type + " " + name + " " + expiration_date + " " + price;
     }
 }
