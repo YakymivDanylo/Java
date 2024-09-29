@@ -1,11 +1,11 @@
 package org.example;
 
-
+import lombok.Getter;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
+@Getter
 public class Products {
     int id_product;
     String name_product;

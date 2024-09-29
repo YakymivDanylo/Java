@@ -10,10 +10,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClientDAO {
+    @Getter
     ClientDTO client;
-    public ClientDAO(ClientDTO client){this.client = client;}
-
-    public ClientDTO getClient() {
-        return client;
+    List<Order> list_orders;
+    public ClientDAO( ClientDTO client) {
+        this.client = client;
     }
+    public ClientDAO(ClientDTO client,List<Order> list_orders){this.client = client;
+    this.list_orders = list_orders;}
+
+//    public set
+
 }
