@@ -14,40 +14,22 @@ import java.util.stream.Collectors;
 
 @Getter
 public class ClientDTO extends Person {
-    String password;
-    String favoriteDish;
-    List<Order> orders = new ArrayList<>();
+    int password;
+    String favorite_dish;
 
-    public ClientDTO(int id, String name, String surname, String last_name, String birth_date, String password, String favoriteDish) {
+    public ClientDTO(int id, String name, String surname, String last_name, String birth_date, int password, String favorite_dish) {
         super(id, name, surname, last_name, birth_date);
         this.password = password;
-        this.favoriteDish = favoriteDish;
+        this.favorite_dish = favorite_dish;
     }
 
-    public static void sortByVisitFrequency(List<ClientDTO> clients) {
-        clients.sort(Comparator.comparingInt(client -> client.getOrders().size()));
-    }
 
-    public static void sortByEmployeeFrequency(List<ClientDTO> clients) {
-        clients.sort((client1, client2) -> {
 
-            Map<Integer, Long> employeeCounts1 = client1.getOrders().stream()
-                    .collect(Collectors.groupingBy(order -> order.getEmployee().getId(), Collectors.counting()));
-            Map<Integer, Long> employeeCounts2 = client2.getOrders().stream()
-                    .collect(Collectors.groupingBy(order -> order.getEmployee().getId(), Collectors.counting()));
-            Optional<Long> maxCount1 = employeeCounts1.values().stream().max(Long::compareTo);
-            Optional<Long> maxCount2 = employeeCounts2.values().stream().max(Long::compareTo);
 
-            return maxCount2.orElse(0L).compareTo(maxCount1.orElse(0L));
-        });
-    }
-    public void sortByOrderPrice() {
-        this.orders.sort(Comparator.comparingDouble(Order::getTotal_price));
-    }
 
-    public static void sortByFavoriteDish(List<ClientDTO> clients) {
-        clients.sort(Comparator.comparing(client -> client.getFavoriteDish(),
-                Comparator.nullsLast(Comparator.naturalOrder())));
+    @Override
+    public String toString() {
+        return super.toString() + " " + password + " " + favorite_dish;
     }
 
 }

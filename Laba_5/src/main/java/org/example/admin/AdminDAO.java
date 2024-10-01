@@ -93,7 +93,10 @@ public class AdminDAO {
             }
 
         }catch (SQLException e){
-            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
+
+//    public addEmployee(Employee employee){}
+
 }

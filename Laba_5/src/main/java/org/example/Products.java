@@ -37,5 +37,8 @@ public class Products {
         }
         return null;
     }
-
+    @Override
+    public String toString() {
+        return id_product + " " + name_product + " " + expiration_date;
+    }
 }

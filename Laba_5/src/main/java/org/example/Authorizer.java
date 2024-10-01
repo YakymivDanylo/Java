@@ -11,7 +11,7 @@ public class Authorizer {
         String configFile = "D:\\java\\Laba_5\\src\\main\\resources\\config.properties";
         try {
             Connection connection = ConnectionDB.getConnection(configFile);
-            String query = "INSERT INTO client(name_client,surname_client,last_name_client, birth_date_client, password_client,favoriteDish)" +
+            String query = "insert into \"Cafe\".\"Client\" (name_client,surname_client,last_name_client,birth_date_client,password_client,favorite_dish)" +
                     " VALUES (?,?,?,?,?,?)";
 
             PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -21,8 +21,8 @@ public class Authorizer {
                 preparedStatement.setString(2, client.getSurname());
                 preparedStatement.setString(3, client.getLast_name());
                 preparedStatement.setString(4, client.getBirth_date());
-                preparedStatement.setString(5, client.getPassword());
-                preparedStatement.setString(6, client.getFavoriteDish());
+                preparedStatement.setInt(5, client.getPassword());
+                preparedStatement.setString(6, client.getFavorite_dish());
 
 
                 int result = preparedStatement.executeUpdate();
@@ -40,23 +40,22 @@ public class Authorizer {
     }
 
 
-    public AdminDAO adminAuthorization(String name, String password) throws Exception {
+    public AdminDAO adminAuthorization(String name, int password) throws Exception {
         String configFilename = "D:\\java\\Laba_5\\src\\main\\resources\\config.properties";
 
         try (Connection connection = ConnectionDB.getConnection(configFilename);
              Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery("SELECT * FROM Admin;")) {
+             ResultSet resultSet = statement.executeQuery("SELECT * FROM \"Cafe\".\"Admin\";")) {
 
             while (resultSet.next()) {
-
-                if (resultSet.getString(2).equals(name) && resultSet.getString(6).equals(password)) {
+                if (resultSet.getString(2).equals(name) && resultSet.getInt(6)==password) {
                     AdminDTO admin = new AdminDTO(
                             resultSet.getInt(1),
                             resultSet.getString(2),
                             resultSet.getString(3),
                             resultSet.getString(4),
                             resultSet.getString(5),
-                            resultSet.getString(6)
+                            resultSet.getInt(6)
                     );
                     System.out.println("You have authorized as ADMIN");
                     ResultSetMetaData rsMetaData = resultSet.getMetaData();
@@ -79,29 +78,29 @@ public class Authorizer {
         return null;
     }
 
-    public ClientDAO clientAuthorization(String name, String password) throws Exception {
+    public ClientDAO clientAuthorization(String name, int password) throws Exception {
         String configFilename = "D:\\java\\Laba_5\\src\\main\\resources\\config.properties";
 
         try (Connection connection = ConnectionDB.getConnection(configFilename);
              Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery("SELECT * FROM Client;")) {
+             ResultSet resultSet = statement.executeQuery("SELECT * FROM \"Cafe\".\"Client\" ;")) {
 
             ResultSetMetaData metaData = resultSet.getMetaData();
             int columnCount = metaData.getColumnCount();
 
             while (resultSet.next()) {
-
-                if (resultSet.getString(2).equals(name) && resultSet.getString(7).equals(password)) {
+                if (resultSet.getString(2).equals(name) && resultSet.getInt(6)==password) {
                     ClientDTO client = new ClientDTO(
                             resultSet.getInt(1),
                             resultSet.getString(2),
                             resultSet.getString(3),
                             resultSet.getString(4),
                             resultSet.getString(5),
-                            resultSet.getString(6),
+                            resultSet.getInt(6),
                             resultSet.getString(7)
                     );
                     ClientDAO clientDao = new ClientDAO(client);
+                   System.out.println("Successful authorization as CLIENT");
                     return clientDao;
                 }
             }

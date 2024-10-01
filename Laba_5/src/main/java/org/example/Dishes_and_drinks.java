@@ -8,13 +8,13 @@ import java.sql.Statement;
 
 @Getter
 public class Dishes_and_drinks {
-    int id_dishes_drinks;
+    int id_of_dishes_and_drinks;
     String type;
     String name;
     String expiration_date;
     double price;
-    public Dishes_and_drinks(int id_dishes_drinks, String type, String name, String expiration_date, double price) {
-        this.id_dishes_drinks = id_dishes_drinks;
+    public Dishes_and_drinks(int id_of_dishes_and_drinks, String type, String name, String expiration_date, double price) {
+        this.id_of_dishes_and_drinks = id_of_dishes_and_drinks;
         this.type = type;
         this.name = name;
         this.expiration_date = expiration_date;
@@ -25,7 +25,7 @@ public class Dishes_and_drinks {
         String configFile = "D:\\java\\Laba_5\\src\\main\\resources\\config.properties";
         try(Connection connection = ConnectionDB.getConnection(configFile);
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM 'List_of_dishes_and_drinks'")){
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM List_of_dishes_and_drinks")){
             while(resultSet.next()) {
                 if(resultSet.getInt(1)==id_dishes_drinks) {
                     return new Dishes_and_drinks(
@@ -45,6 +45,6 @@ public class Dishes_and_drinks {
     }
     @Override
     public String toString() {
-        return id_dishes_drinks + " " + type + " " + name + " " + expiration_date + " " + price;
+        return id_of_dishes_and_drinks + " " + type + " " + name + " " + expiration_date + " " + price;
     }
 }
