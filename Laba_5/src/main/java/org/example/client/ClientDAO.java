@@ -3,11 +3,13 @@ package org.example.client;
 import lombok.Getter;
 import org.example.ConnectionDB;
 import org.example.*;
+import org.example.admin.AdminDAO;
 
 
 import java.sql.*;
 import java.util.*;
 import java.util.stream.Collectors;
+
 @Getter
 public class ClientDAO {
     ClientDTO client;
@@ -32,14 +34,18 @@ public class ClientDAO {
         try {
             Connection connection = ConnectionDB.getConnection(configFile);
             for (Dishes_and_drinks dishesAndDrinks : order.getDishesAndDrinks()) {
-                String query = "insert into \"Cafe\".\"Order\" (employee_id_employee,dishes_and_drinks_id,data_order,client_id_client,total_price) values(?,?,?,?,?)";
+                String query = "insert into \"Cafe\".\"Order\" (employee_id_employee,dishes_and_drinks_id,data_order,client_id_client,total_sum) values(?,?,?,?,?)";
+                for (Dishes_and_drinks diAndDri : order.getDishesAndDrinks()) {
+                    AdminDAO.addDishesDrinks(diAndDri);
+                }
+
                 PreparedStatement preparedStatement = connection.prepareStatement(query);
                 try {
                     preparedStatement.setInt(1, order.getEmployee().getId());
                     preparedStatement.setInt(2, dishesAndDrinks.getId_of_dishes_and_drinks());
                     preparedStatement.setString(3, order.getData_order());
                     preparedStatement.setInt(4, order.getClient_id_client());
-                    preparedStatement.setDouble(5, order.getTotal_price());
+                    preparedStatement.setDouble(5, order.getTotal_sum());
 
 
                     int result = preparedStatement.executeUpdate();
@@ -61,6 +67,39 @@ public class ClientDAO {
     public void showHistory() {
         for (Order order : list_orders) {
             System.out.println(order);
+        }
+    }
+
+    public void setOrderHistory() {
+        String configFilename = "D:\\java\\Laba_5\\src\\main\\resources\\config.properties";
+        try {
+            Connection connection = ConnectionDB.getConnection(configFilename);
+            Statement statement = connection.createStatement();
+
+            try (connection; statement; ResultSet resultSet = statement.executeQuery("SELECT * FROM `order`;")) {
+                while (resultSet.next()) {
+                    if (resultSet.getInt("client_id_client") == this.getClient().getId()) {
+                        resultSet.getInt(1);
+                                resultSet.getInt(2);
+                                resultSet.getInt(3);
+                                resultSet.getString(4);
+                                resultSet.getInt(5);
+                                resultSet.getDouble(6);
+                                Order order = new Order(resultSet.getInt(1),
+                                        Employee.employeeFromDB(resultSet.getInt(2)),
+//                                        Dishes_and_drinks.dishFromDB(resultSet.getInt(3)),
+                                        resultSet.getString(4), this.client.getId(), resultSet.getDouble(6));
+//                                Driver driver = Driver.driverFromDB(resultSet.getInt("Driver_driver_id"));
+//                        Order order = new Order(resultSet.getInt(1), resultSet.getDouble(2), driver, this.getClient());
+//                        order.orderFromFile();
+//                        this.addOrder(order);
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -113,8 +152,7 @@ public class ClientDAO {
                 System.out.println("Rows affected: " + result);
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
-            }
-            finally {
+            } finally {
                 preparedStatement.close();
                 connection.close();
             }
@@ -149,13 +187,14 @@ public class ClientDAO {
     }
 
     public void sortByOrderPrice() {
-        this.list_orders.sort(Comparator.comparingDouble(Order::getTotal_price));
+        this.list_orders.sort(Comparator.comparingDouble(Order::getTotal_sum));
     }
 
     public static void sortByFavoriteDish(List<ClientDAO> clients) {
         clients.sort(Comparator.comparing(client -> client.getClient().getFavorite_dish(),
                 Comparator.nullsLast(Comparator.naturalOrder())));
     }
+
 }
 
 

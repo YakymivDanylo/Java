@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 public class Dishes_and_drinks {
@@ -13,15 +15,18 @@ public class Dishes_and_drinks {
     String name;
     String expiration_date;
     double price;
-    public Dishes_and_drinks(int id_of_dishes_and_drinks, String type, String name, String expiration_date, double price) {
+    Order order;
+
+    public Dishes_and_drinks(int id_of_dishes_and_drinks, String type, String name, String expiration_date, double price, Order order) {
         this.id_of_dishes_and_drinks = id_of_dishes_and_drinks;
         this.type = type;
         this.name = name;
         this.expiration_date = expiration_date;
         this.price = price;
+        this.order = order;
     }
 
-    static public Dishes_and_drinks listFromDB(int id_dishes_drinks) throws Exception{
+    static public Dishes_and_drinks dishFromDB(int id_dishes_drinks) throws Exception{
         String configFile = "D:\\java\\Laba_5\\src\\main\\resources\\config.properties";
         try(Connection connection = ConnectionDB.getConnection(configFile);
             Statement statement = connection.createStatement();
@@ -43,6 +48,8 @@ public class Dishes_and_drinks {
         }
         return null;
     }
+
+
     @Override
     public String toString() {
         return id_of_dishes_and_drinks + " " + type + " " + name + " " + expiration_date + " " + price;

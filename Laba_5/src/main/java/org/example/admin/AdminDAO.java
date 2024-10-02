@@ -69,7 +69,7 @@ public class AdminDAO {
         }
     }
 
-    public void addDishesDrinks(Dishes_and_drinks listOfDishesAndDrinks){
+    public static void addDishesDrinks(Dishes_and_drinks listOfDishesAndDrinks){
         String configFile = "D:\\java\\Laba_5\\src\\main\\resources\\config.properties";
         try{
             Connection connection = ConnectionDB.getConnection(configFile);

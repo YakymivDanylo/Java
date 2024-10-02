@@ -28,9 +28,17 @@ public class Main {
 
         Employee employee = new Employee(1,"Oleg","Mongol","Rostyslavovich","2006-06-04");
 //
-        List<Dishes_and_drinks> dishesAndDrinks = List.of(new Dishes_and_drinks(1,"drinks","dark_tea","2024-10-01",20));
-        Order order = new Order(1,employee,dishesAndDrinks,"2024-09-30",1,30.0);
+        Order order = new Order(1,employee,"2024-09-30",1,30.0);
+        Order order1 = new Order(2,employee,"2024-09-30",1,15.5);
+        List<Dishes_and_drinks> dishesAndDrinks = List.of(new Dishes_and_drinks(1,"dish","Burger","2024-10-01",20,order));
+        List<Dishes_and_drinks> dishesAndDrinks1 = List.of(new Dishes_and_drinks(2,"drinks","mochito","2024-10-01",30,order1));
 
-        clientDAO.cancelLastOrder(order);
+        //clientDAO.cancelLastOrder(order);
+        clientDAO.makeOrder(order);
+        clientDAO.makeOrder(order1);
+        clientDAO.sortByOrderPrice();
+        clientDAO.showHistory();
+        Menu menu = new Menu() ;
+        Menu.sortByVisitFrequency(menu.getClients());
     }
 }

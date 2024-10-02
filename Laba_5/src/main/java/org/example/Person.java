@@ -19,4 +19,9 @@ public class Person {
         this.last_name = last_name;
         this.birth_date = birth_date;
     }
+
+    @Override
+    public String toString() {
+        return "Person [id=" + id + ", name=" + name + ", surname=" + surname + ", last_name=" + last_name + ", birth_date=" + birth_date + "]";
+    }
 }
