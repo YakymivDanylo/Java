@@ -29,29 +29,34 @@ public class ClientDAO {
         String configFile = "D:\\java\\Laba_5\\src\\main\\resources\\config.properties";
         try {
             Connection connection = ConnectionDB.getConnection(configFile);
-            for (Dishes_and_drinks dishesAndDrinks : order.getDiAndDi()) {
-                String query = "insert into \"Cafe\".\"Order\" (employee_id_employee,data_order,client_id_client,total_sum) values(?,?,?,?)";
-                for (Dishes_and_drinks diAndDri : order.getDiAndDi()) {
-                    AdminDAO.addDishesDrinks(diAndDri, order.getId());
+
+            String queryOrder = "INSERT INTO \"Cafe\".\"Order\" (employee_id_employee,data_order,client_id_client,total_sum) values(?,?,?,?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(queryOrder, Statement.RETURN_GENERATED_KEYS);
+
+            try {
+                preparedStatement.setInt(1, order.getEmployee().getId());
+                preparedStatement.setString(2, order.getData_order());
+                preparedStatement.setInt(3, order.getClient_id_client());
+                preparedStatement.setDouble(4, order.getTotal_sum());
+
+                int result = preparedStatement.executeUpdate();
+                System.out.println("Rows affected: " + result);
+
+                ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    int orderId = generatedKeys.getInt(1);
+
+                    for (Dishes_and_drinks diAndDri : order.getDiAndDi()) {
+                        AdminDAO.addDishesDrinks(diAndDri, orderId);
+                    }
+                } else {
+                    throw new SQLException("Не вдалося отримати order_id.");
                 }
-
-                PreparedStatement preparedStatement = connection.prepareStatement(query);
-                try {
-                    preparedStatement.setInt(1, order.getEmployee().getId());
-                    preparedStatement.setString(2, order.getData_order());
-                    preparedStatement.setInt(3, order.getClient_id_client());
-                    preparedStatement.setDouble(4, order.getTotal_sum());
-
-                    int result = preparedStatement.executeUpdate();
-                    System.out.println("Rows affected: " + result);
-
-
-                } catch (SQLException e) {
-                    System.out.println(e.getMessage());
-                } finally {
-                    preparedStatement.close();
-                    connection.close();
-                }
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            } finally {
+                preparedStatement.close();
+                connection.close();
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());

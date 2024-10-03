@@ -11,7 +11,7 @@ public class Authorizer {
         String configFile = "D:\\java\\Laba_5\\src\\main\\resources\\config.properties";
         try {
             Connection connection = ConnectionDB.getConnection(configFile);
-            String query = "insert into \"Cafe\".\"Client\" (name_client,surname_client,last_name_client,birth_date_client,password_client,favorite_dish)" +
+            String query = "INSERT INTO \"Cafe\".\"Client\" (name_client,surname_client,last_name_client,birth_date_client,password_client,favorite_dish)" +
                     " VALUES (?,?,?,?,?,?)";
 
             PreparedStatement preparedStatement = connection.prepareStatement(query);

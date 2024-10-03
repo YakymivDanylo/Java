@@ -8,35 +8,76 @@ import org.example.client.ClientDTO;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 public class Main {
     public static void main(String[] args) throws Exception {
-        String password = "123";
-        String password2 = "234";
-//        AdminDTO adminDTO = new AdminDTO(1,"Danylo","surname","last_name","2005-12-26",password.hashCode());
-//        AdminDAO adminDAO = new AdminDAO(adminDTO);
+//        String password = "123";
+//        String password2 = "234";
+////        AdminDTO adminDTO = new AdminDTO(1,"Danylo","surname","last_name","2005-12-26",password.hashCode());
+////        AdminDAO adminDAO = new AdminDAO(adminDTO);
+//        Authorizer authorizer = new Authorizer();
+////       AdminDAO adminDAO1 = authorizer.adminAuthorization(adminDTO.getName(), adminDTO.getPassword());
+//
+//
+//        ClientDTO clientDTO = new ClientDTO(1,"Vlad","smth","smth","2005-12-26",password2.hashCode(),"Burger");
+//        ClientDAO clientDAO = authorizer.clientAuthorization(clientDTO.getName(),password2.hashCode());
+//
+//        Employee employee = new Employee(1,"Oleg","Mongol","Rostyslavovich","2006-06-04");
+//
+//
+//        List<Dishes_and_drinks> dishesAndDrinks = List.of(new Dishes_and_drinks(4,"dish","Burger","2024-10-01",20));
+//        List<Dishes_and_drinks> dishesAndDrinks1 = List.of(new Dishes_and_drinks(5,"drinks","mochito","2024-10-01",30));
+//
+//        Order order = new Order(1,employee,"2024-09-30",1,30.0,dishesAndDrinks);
+////        Order order1 = new Order(2,employee,"2024-09-31",1,15.5,dishesAndDrinks1);
+//
+//        //clientDAO.cancelLastOrder(order);
+//        clientDAO.makeOrder(order);
+////        clientDAO.makeOrder(order1);
+//        clientDAO.sortByOrderPrice();
+//        clientDAO.showHistory();
+//        Menu menu = new Menu() ;
+//        Menu.sortByVisitFrequency(menu.getClients());
+
+
         Authorizer authorizer = new Authorizer();
-//       AdminDAO adminDAO1 = authorizer.adminAuthorization(adminDTO.getName(), adminDTO.getPassword());
+        String password = "123";
+        String password1 = "456";
+        AdminDTO adminDTO = new AdminDTO(1,"Danylo","Yakymiv","Romanovich","2005-12-26",password.hashCode());
+        AdminDAO admin = authorizer.adminAuthorization(adminDTO.getName(), adminDTO.getPassword());
+
+        ClientDTO clientDTO = new ClientDTO(1,"Vova","Gorodetskiy","Vasylovich","2005-01-27",password1.hashCode(),"Makaronu");
+        ClientDAO client = authorizer.register(clientDTO);
+        ClientDTO clientDTO1 = new ClientDTO(2,"Matviy","Gorodetskiy","Vasylovich","2005-01-27",password1.hashCode(),"Beer");
+                ClientDAO client1 = authorizer.register(clientDTO1);
 
 
-        ClientDTO clientDTO = new ClientDTO(1,"Vlad","smth","smth","2005-12-26",password2.hashCode(),"Burger");
-        ClientDAO clientDAO = authorizer.clientAuthorization(clientDTO.getName(),password2.hashCode());
+        Employee employee1 = new Employee(1,"Rostyk","Rodshyk","Romanovich","2006-07-04");
+        Employee employee2 = new Employee(2,"Oleksandr ","Ivanovych ","Petrov ","1990-03-15");
+        Employee employee3 = new Employee(3,"Mariya","Stepanivna","Koval","1985-07-22");
+        Employee employee4 = new Employee(4,"Dmytro","Vasylovych","Smyrnov","1992-12-05");
 
-        Employee employee = new Employee(1,"Oleg","Mongol","Rostyslavovich","2006-06-04");
+        List<Dishes_and_drinks> dishesAndDrinks1 = List.of(new Dishes_and_drinks(1,"dish","Burger","2024-10-01",20));
+        List<Dishes_and_drinks> dishesAndDrinks2 = List.of( new Dishes_and_drinks(2,"dish","makaronu","2024-10-07",75), new Dishes_and_drinks(3,"drinks","beer","none",30));
+        List<Dishes_and_drinks> dishesAndDrinks3 = List.of( new Dishes_and_drinks(3,"drinks","beer","none",30));
+        List<Dishes_and_drinks> dishesAndDrinks4 = List.of(new Dishes_and_drinks(4,"dish","beef","2024-10-01",300));
+        List<Dishes_and_drinks> dishesAndDrinks5 = List.of(new Dishes_and_drinks(5,"drinks","mochito","2024-10-01",50));
+        List<Dishes_and_drinks> dishesAndDrinks6 = List.of(new Dishes_and_drinks(5,"drinks","coca-cola","2024-10-01",20));
 
 
-        List<Dishes_and_drinks> dishesAndDrinks = List.of(new Dishes_and_drinks(4,"dish","Burger","2024-10-01",20));
-        List<Dishes_and_drinks> dishesAndDrinks1 = List.of(new Dishes_and_drinks(5,"drinks","mochito","2024-10-01",30));
+        Order order1 = new Order(1, employee1,"2024-10-02",3,200.50,dishesAndDrinks1);
+        Order order2 = new Order(2, employee1,"2024-10-02",5,100.50,dishesAndDrinks2);
+        Order order3 = new Order(3, employee2,"2024-10-03",5,50.0,dishesAndDrinks3);
+        Order order4 = new Order(4, employee4,"2024-10-05",5,50.0,dishesAndDrinks4);
 
-        Order order = new Order(1,employee,"2024-09-30",1,30.0,dishesAndDrinks);
-//        Order order1 = new Order(2,employee,"2024-09-31",1,15.5,dishesAndDrinks1);
+//        admin.addEmployee(employee1);
+//        admin.addEmployee(employee2);
+//        admin.addEmployee(employee3);
+//        admin.addEmployee(employee4);
 
-        //clientDAO.cancelLastOrder(order);
-        clientDAO.makeOrder(order);
-//        clientDAO.makeOrder(order1);
-        clientDAO.sortByOrderPrice();
-        clientDAO.showHistory();
-        Menu menu = new Menu() ;
-        Menu.sortByVisitFrequency(menu.getClients());
+//        client.makeOrder(order1);
+//        client.makeOrder(order2);
+//        client.makeOrder(order3);
+//        client1.makeOrder(order4);
+
     }
 }
