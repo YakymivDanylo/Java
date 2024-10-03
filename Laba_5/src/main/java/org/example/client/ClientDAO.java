@@ -19,10 +19,6 @@ public class ClientDAO {
         this.client = client;
     }
 
-//    public List<Order> getOrders() {
-//        return list_orders;
-//    }
-
     public ClientDAO(ClientDTO client, List<Order> list_orders) {
         this.client = client;
         this.list_orders = list_orders;
@@ -33,20 +29,18 @@ public class ClientDAO {
         String configFile = "D:\\java\\Laba_5\\src\\main\\resources\\config.properties";
         try {
             Connection connection = ConnectionDB.getConnection(configFile);
-            for (Dishes_and_drinks dishesAndDrinks : order.getDishesAndDrinks()) {
-                String query = "insert into \"Cafe\".\"Order\" (employee_id_employee,dishes_and_drinks_id,data_order,client_id_client,total_sum) values(?,?,?,?,?)";
-                for (Dishes_and_drinks diAndDri : order.getDishesAndDrinks()) {
-                    AdminDAO.addDishesDrinks(diAndDri);
+            for (Dishes_and_drinks dishesAndDrinks : order.getDiAndDi()) {
+                String query = "insert into \"Cafe\".\"Order\" (employee_id_employee,data_order,client_id_client,total_sum) values(?,?,?,?)";
+                for (Dishes_and_drinks diAndDri : order.getDiAndDi()) {
+                    AdminDAO.addDishesDrinks(diAndDri, order.getId());
                 }
 
                 PreparedStatement preparedStatement = connection.prepareStatement(query);
                 try {
                     preparedStatement.setInt(1, order.getEmployee().getId());
-                    preparedStatement.setInt(2, dishesAndDrinks.getId_of_dishes_and_drinks());
-                    preparedStatement.setString(3, order.getData_order());
-                    preparedStatement.setInt(4, order.getClient_id_client());
-                    preparedStatement.setDouble(5, order.getTotal_sum());
-
+                    preparedStatement.setString(2, order.getData_order());
+                    preparedStatement.setInt(3, order.getClient_id_client());
+                    preparedStatement.setDouble(4, order.getTotal_sum());
 
                     int result = preparedStatement.executeUpdate();
                     System.out.println("Rows affected: " + result);
@@ -72,29 +66,19 @@ public class ClientDAO {
 
     public void setOrderHistory() {
         String configFilename = "D:\\java\\Laba_5\\src\\main\\resources\\config.properties";
+        List<Order> orders = new ArrayList<>();
         try {
             Connection connection = ConnectionDB.getConnection(configFilename);
             Statement statement = connection.createStatement();
 
-            try (connection; statement; ResultSet resultSet = statement.executeQuery("SELECT * FROM `order`;")) {
+            try (connection; statement; ResultSet resultSet = statement.executeQuery("SELECT * FROM \"Cafe\".\"Order\" ;")) {
                 while (resultSet.next()) {
-                    if (resultSet.getInt("client_id_client") == this.getClient().getId()) {
-                        resultSet.getInt(1);
-                                resultSet.getInt(2);
-                                resultSet.getInt(3);
-                                resultSet.getString(4);
-                                resultSet.getInt(5);
-                                resultSet.getDouble(6);
-                                Order order = new Order(resultSet.getInt(1),
-                                        Employee.employeeFromDB(resultSet.getInt(2)),
-//                                        Dishes_and_drinks.dishFromDB(resultSet.getInt(3)),
-                                        resultSet.getString(4), this.client.getId(), resultSet.getDouble(6));
-//                                Driver driver = Driver.driverFromDB(resultSet.getInt("Driver_driver_id"));
-//                        Order order = new Order(resultSet.getInt(1), resultSet.getDouble(2), driver, this.getClient());
-//                        order.orderFromFile();
-//                        this.addOrder(order);
+                    if (resultSet.getInt(4) == this.getClient().getId()) {
+                        Order order = new Order(resultSet.getInt(1), Employee.employeeFromDB(resultSet.getInt(2)), resultSet.getString(3), this.getClient().getId(), resultSet.getDouble(5), Dishes_and_drinks.dishFromDB(resultSet.getInt(1)));
+                        orders.add(order);
                     }
                 }
+                this.list_orders = orders;
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }

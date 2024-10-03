@@ -16,7 +16,7 @@ public class Employee extends Person {
         String configFile="D:\\java\\Laba_5\\src\\main\\resources\\config.properties";
         try(Connection connection = ConnectionDB.getConnection(configFile);
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM employee;")){
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM \"Cafe\".\"Employee\";")){
             while(resultSet.next()) {
                 if(resultSet.getInt(1) == id) {
                     return new Employee(

@@ -28,7 +28,7 @@ public class AdminDAO {
                 preparedStatement.setString(2, product.getExpiration_date());
 
                 int result = preparedStatement.executeUpdate();
-                System.out.println("Rows affected" + result);
+                System.out.println("Rows affected: " + result);
                 preparedStatement.close();
                 connection.close();
             }catch (SQLException e){
@@ -55,7 +55,7 @@ public class AdminDAO {
                     preparedStatement.setString(4,employee.getBirth_date());
 
                     int result = preparedStatement.executeUpdate();
-                    System.out.println("Rows affected" + result);
+                    System.out.println("Rows affected: " + result);
                     preparedStatement.close();
                     connection.close();
                 }catch (SQLException e){
@@ -69,11 +69,11 @@ public class AdminDAO {
         }
     }
 
-    public static void addDishesDrinks(Dishes_and_drinks listOfDishesAndDrinks){
+    public static void addDishesDrinks(Dishes_and_drinks listOfDishesAndDrinks,int order_id){
         String configFile = "D:\\java\\Laba_5\\src\\main\\resources\\config.properties";
         try{
             Connection connection = ConnectionDB.getConnection(configFile);
-            String query = "INSERT INTO \"Cafe\".\"List_of_dishes_and_drinks\" (type_of_dishes_and_drinks,name_of_dishes_and_drinks,expiration_date_of_dishes_and_drinks,price) VALUES (?,?,?,?)";
+            String query = "INSERT INTO \"Cafe\".\"List_of_dishes_and_drinks\" (type_of_dishes_and_drinks,name_of_dishes_and_drinks,expiration_date_of_dishes_and_drinks,price,order_id_order) VALUES (?,?,?,?,?)";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
 
             try{
@@ -81,9 +81,10 @@ public class AdminDAO {
                 preparedStatement.setString(2,listOfDishesAndDrinks.getName());
                 preparedStatement.setString(3,listOfDishesAndDrinks.getExpiration_date());
                 preparedStatement.setDouble(4,listOfDishesAndDrinks.getPrice());
+                preparedStatement.setInt(5,order_id);
 
                 int result = preparedStatement.executeUpdate();
-                System.out.println("Rows affected" + result);
+                System.out.println("Rows affected: " + result);
                 preparedStatement.close();
                 connection.close();
             }catch (SQLException e){

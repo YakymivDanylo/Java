@@ -23,10 +23,6 @@ public class ClientDTO extends Person {
         this.favorite_dish = favorite_dish;
     }
 
-
-
-
-
     @Override
     public String toString() {
         return super.toString() + " " + password + " " + favorite_dish;

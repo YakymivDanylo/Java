@@ -21,7 +21,7 @@ public class Products {
 
         try(Connection connection = ConnectionDB.getConnection(configFile);
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("select * from Products;")){
+            ResultSet resultSet = statement.executeQuery("select * from \"Cafe\".\"Products\";")){
                 while(resultSet.next()) {
                     if(resultSet.getInt(1)==id_product){
                         return new Products(
