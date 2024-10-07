@@ -5,6 +5,7 @@ import org.example.client.ClientDTO;
 
 import java.sql.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.example.client.ClientDAO.getOrderCountByEmployee;
 
@@ -42,32 +43,18 @@ public class Menu {
             throw new Exception("Problem with DB!", e);
         }
     }
-    public static void sortByEmployeeFrequency(List<ClientDAO> clients) {
-        clients.sort((client1, client2) -> {
-            // Отримуємо мапи "працівник - кількість замовлень" для кожного клієнта
-            Map<Integer, Long> employeeOrderCount1 = getOrderCountByEmployee(client1);
-            Map<Integer, Long> employeeOrderCount2 = getOrderCountByEmployee(client2);
-
-            // Знаходимо перетин ключів (ID працівників) для обох мап
-            Set<Integer> commonEmployeeIds = new HashSet<>(employeeOrderCount1.keySet());
-            commonEmployeeIds.retainAll(employeeOrderCount2.keySet());
-
-            // Якщо немає спільних працівників, порівнюємо за максимальним значенням, як раніше
-            if (commonEmployeeIds.isEmpty()) {
-                Optional<Long> maxOrdersClient1 = employeeOrderCount1.values().stream().max(Long::compareTo);
-                Optional<Long> maxOrdersClient2 = employeeOrderCount2.values().stream().max(Long::compareTo);
-                return maxOrdersClient2.orElse(0L).compareTo(maxOrdersClient1.orElse(0L));
-            } else {
-                // Якщо є спільні працівники, порівнюємо за максимальним значенням для спільних працівників
-                Optional<Long> maxCommonOrdersClient1 = commonEmployeeIds.stream()
-                        .map(employeeId -> employeeOrderCount1.getOrDefault(employeeId, 0L))
-                        .max(Long::compareTo);
-                Optional<Long> maxCommonOrdersClient2 = commonEmployeeIds.stream()
-                        .map(employeeId -> employeeOrderCount2.getOrDefault(employeeId, 0L))
-                        .max(Long::compareTo);
-                return maxCommonOrdersClient2.orElse(0L).compareTo(maxCommonOrdersClient1.orElse(0L));
-            }
-        });
+    public static List<ClientDAO> findClientsByEmployeeFrequency(List<ClientDAO> clients) {
+        return clients.stream()
+                .filter(client -> client.getList_orders().size() > 1) // Фільтруємо клієнтів з більш ніж одним замовленням
+                .filter(client -> {
+                    // Перевіряємо, чи всі замовлення клієнта обслуговував один і той самий працівник
+                    int firstEmployeeId = client.getList_orders().get(0).getEmployee().getId();
+                    return client.getList_orders().stream()
+                            .allMatch(order -> order.getEmployee().getId() == firstEmployeeId);
+                })
+                .collect(Collectors.toList());
     }
+
+
 
 }

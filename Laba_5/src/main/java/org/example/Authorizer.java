@@ -84,7 +84,6 @@ public class Authorizer {
         try (Connection connection = ConnectionDB.getConnection(configFilename);
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery("SELECT * FROM \"Cafe\".\"Client\" ;")) {
-
             ResultSetMetaData metaData = resultSet.getMetaData();
             int columnCount = metaData.getColumnCount();
 
@@ -100,7 +99,8 @@ public class Authorizer {
                             resultSet.getString(7)
                     );
                     ClientDAO clientDao = new ClientDAO(client);
-                   System.out.println("Successful authorization as CLIENT");
+                   clientDao.setOrderHistory();
+                    System.out.println("Successful authorization as CLIENT");
                     return clientDao;
                 }
             }

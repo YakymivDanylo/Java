@@ -10,10 +10,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+
+import static org.example.Menu.findClientsByEmployeeFrequency;
+
 public class Main {
     public static void main(String[] args) throws Exception {
-//        String password = "123";
-//        String password2 = "234";
+        String password = "123";
+        String password2 = "234";
+        String password1 = "123";
 ////        AdminDTO adminDTO = new AdminDTO(1,"Danylo","surname","last_name","2005-12-26",password.hashCode());
 ////        AdminDAO adminDAO = new AdminDAO(adminDTO);
 //        Authorizer authorizer = new Authorizer();
@@ -41,7 +45,7 @@ public class Main {
 //        Menu.sortByVisitFrequency(menu.getClients());
 
 
-//        Authorizer authorizer = new Authorizer();
+        Authorizer authorizer = new Authorizer();
 //        String password = "123";
 //        String password1 = "456";
 //        AdminDTO adminDTO = new AdminDTO(1,"Danylo","Yakymiv","Romanovich","2005-12-26",password.hashCode());
@@ -51,8 +55,8 @@ public class Main {
 //
 //        ClientDTO clientDTO = new ClientDTO(1,"Vova","Gorodetskiy","Vasylovich","2005-01-27",password1.hashCode(),"Makaronu");
 //        ClientDAO client = authorizer.register(clientDTO);
-//        ClientDTO clientDTO1 = new ClientDTO(2,"Matviy","Gorodetskiy","Vasylovich","2005-01-27",password1.hashCode(),"Beer");
-//                ClientDAO client1 = authorizer.register(clientDTO1);
+        ClientDTO clientDTO1 = new ClientDTO(17,"Matviy","Gorodetskiy","Vasylovich","2005-01-27",password1.hashCode(),"Beer");
+                ClientDAO client1 = authorizer.clientAuthorization(clientDTO1.getName(),password1.hashCode());
 //
 //
 //        Employee employee1 = new Employee(2,"Rostyk","Rodshyk","Romanovich","2006-07-04");
@@ -85,17 +89,22 @@ public class Main {
 //        client1.makeOrder(order4);
 
 
-        Menu menu = new Menu();
-        List<ClientDAO> clientDAOS = menu.getClients();
-        List<ClientDAO> sortedByVisiting =  Menu.sortByVisitFrequency(clientDAOS);/*1*/
-        for (ClientDAO clientDAO : sortedByVisiting) {
-            System.out.println(clientDAO);
-        }
+//        Menu menu = new Menu();
+//        List<ClientDAO> clientDAOS = menu.getClients();
+//        List<ClientDAO> sortedByVisiting =  Menu.sortByVisitFrequency(clientDAOS);/*1*/
+//        for (ClientDAO clientDAO : sortedByVisiting) {
+//            System.out.println(clientDAO);
+//        }
 
-        List<ClientDAO> sortedByOrder = clientDAOS.stream().sorted(Comparator.comparingInt(ClientDAO::getAmountOfOrders).reversed()).toList();/*2*/
-        for (ClientDAO clientDAO : sortedByOrder) {
-            System.out.println(clientDAO);
-        }
+//        List<ClientDAO> clients = findClientsByEmployeeFrequency(clientDAOS);/*2*/
+//        List<ClientDAO> frequentClients = findClientsByEmployeeFrequency(clients);
+//        frequentClients.forEach(client -> System.out.println(client.getClient().getName() + " " + client.getClient().getSurname()));
+
+        /*3*/
+//        client1.sortByOrderPrice();
+//        for (Order order : client1.getList_orders()) {
+//            System.out.println(order);
+//        }
 
 
     }
