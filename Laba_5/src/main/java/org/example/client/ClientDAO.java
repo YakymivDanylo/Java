@@ -150,8 +150,7 @@ public class ClientDAO {
         }
     }
 
-    // Допоміжна функція для отримання мапи "працівник - кількість замовлень"
-    private static Map<Integer, Long> getOrderCountByEmployee(ClientDAO client) {
+    public static Map<Integer, Long> getOrderCountByEmployee(ClientDAO client) {
         return client.getList_orders().stream()
                 .filter(order -> order.getEmployee() != null) // Виключаємо замовлення без працівника
                 .collect(Collectors.groupingBy(
@@ -160,30 +159,26 @@ public class ClientDAO {
                 ));
     }
 
-    public static void sortByEmployeeFrequency(List<ClientDAO> clients) {
-        clients.sort((client1, client2) -> {
-            // Отримуємо мапу "працівник - кількість замовлень" для кожного клієнта
-            Map<Integer, Long> employeeOrderCount1 = getOrderCountByEmployee(client1);
-            Map<Integer, Long> employeeOrderCount2 = getOrderCountByEmployee(client2);
 
-            // Знаходимо максимальну кількість замовлень, обслуговану одним працівником, для кожного клієнта
-            Optional<Long> maxOrdersClient1 = employeeOrderCount1.values().stream().max(Long::compareTo);
-            Optional<Long> maxOrdersClient2 = employeeOrderCount2.values().stream().max(Long::compareTo);
-
-            // Порівнюємо максимальні значення для сортування
-            return maxOrdersClient2.orElse(0L).compareTo(maxOrdersClient1.orElse(0L));
-        });
-    }
-
+    //3
     public void sortByOrderPrice() {
         this.list_orders.sort(Comparator.comparingDouble(Order::getTotal_sum));
     }
 
+    //4
     public static void sortByFavoriteDish(List<ClientDAO> clients) {
         clients.sort(Comparator.comparing(client -> client.getClient().getFavorite_dish(),
                 Comparator.nullsLast(Comparator.naturalOrder())));
     }
 
+    @Override
+    public String toString() {
+        return client.toString();
+    }
+
+    public int getAmountOfOrders(){
+        return this.list_orders.size();
+    }
 }
 
 

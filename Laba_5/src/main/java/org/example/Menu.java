@@ -4,13 +4,14 @@ import org.example.client.ClientDAO;
 import org.example.client.ClientDTO;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+
+import static org.example.client.ClientDAO.getOrderCountByEmployee;
 
 public class Menu {
-    public static void sortByVisitFrequency(List<ClientDAO> clients) {
-        clients.sort(Comparator.comparingInt(client -> client.getList_orders().size()));
+    //1
+    public static List<ClientDAO> sortByVisitFrequency(List<ClientDAO> clients) {
+        return clients.stream().sorted(Comparator.comparingInt(ClientDAO::getAmountOfOrders).reversed()).toList();
     }
 
     public List<ClientDAO> getClients() throws Exception {
@@ -20,7 +21,6 @@ public class Menu {
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery("select * from \"Cafe\".\"Client\";")) {
             ResultSetMetaData metaData = resultSet.getMetaData();
-            int columnCount = metaData.getColumnCount();
             List<ClientDAO> clients = new ArrayList<ClientDAO>();
             while (resultSet.next()) {
                 ClientDTO clientDTO = new ClientDTO(
@@ -33,16 +33,41 @@ public class Menu {
                         resultSet.getString(7)
                 );
                 ClientDAO client = new ClientDAO(clientDTO);
+                client.setOrderHistory();
                 clients.add(client);
-                System.out.println("Successful authorization as CLIENT");
-                return clients;
             }
+            return clients;
         } catch (SQLException e) {
             System.out.println("Error! " + e.getMessage());
             throw new Exception("Problem with DB!", e);
         }
-        return null;
     }
+    public static void sortByEmployeeFrequency(List<ClientDAO> clients) {
+        clients.sort((client1, client2) -> {
+            // Отримуємо мапи "працівник - кількість замовлень" для кожного клієнта
+            Map<Integer, Long> employeeOrderCount1 = getOrderCountByEmployee(client1);
+            Map<Integer, Long> employeeOrderCount2 = getOrderCountByEmployee(client2);
 
+            // Знаходимо перетин ключів (ID працівників) для обох мап
+            Set<Integer> commonEmployeeIds = new HashSet<>(employeeOrderCount1.keySet());
+            commonEmployeeIds.retainAll(employeeOrderCount2.keySet());
+
+            // Якщо немає спільних працівників, порівнюємо за максимальним значенням, як раніше
+            if (commonEmployeeIds.isEmpty()) {
+                Optional<Long> maxOrdersClient1 = employeeOrderCount1.values().stream().max(Long::compareTo);
+                Optional<Long> maxOrdersClient2 = employeeOrderCount2.values().stream().max(Long::compareTo);
+                return maxOrdersClient2.orElse(0L).compareTo(maxOrdersClient1.orElse(0L));
+            } else {
+                // Якщо є спільні працівники, порівнюємо за максимальним значенням для спільних працівників
+                Optional<Long> maxCommonOrdersClient1 = commonEmployeeIds.stream()
+                        .map(employeeId -> employeeOrderCount1.getOrDefault(employeeId, 0L))
+                        .max(Long::compareTo);
+                Optional<Long> maxCommonOrdersClient2 = commonEmployeeIds.stream()
+                        .map(employeeId -> employeeOrderCount2.getOrDefault(employeeId, 0L))
+                        .max(Long::compareTo);
+                return maxCommonOrdersClient2.orElse(0L).compareTo(maxCommonOrdersClient1.orElse(0L));
+            }
+        });
+    }
 
 }
