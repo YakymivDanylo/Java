@@ -55,6 +55,9 @@ public class Menu {
                 .collect(Collectors.toList());
     }
 
-
+    public static void sortByFavoriteDish(List<ClientDAO> clients) {
+        clients.sort(Comparator.comparing(client -> client.getClient().getFavorite_dish(),
+                Comparator.nullsLast(Comparator.naturalOrder())));
+    }
 
 }

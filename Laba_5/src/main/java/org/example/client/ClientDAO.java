@@ -162,14 +162,11 @@ public class ClientDAO {
 
     //3
     public void sortByOrderPrice() {
-        this.list_orders.sort(Comparator.comparingDouble(Order::getTotal_sum));
+        this.list_orders.sort(Comparator.comparingDouble(Order::getTotal_sum).reversed());
     }
 
     //4
-    public static void sortByFavoriteDish(List<ClientDAO> clients) {
-        clients.sort(Comparator.comparing(client -> client.getClient().getFavorite_dish(),
-                Comparator.nullsLast(Comparator.naturalOrder())));
-    }
+
 
     @Override
     public String toString() {

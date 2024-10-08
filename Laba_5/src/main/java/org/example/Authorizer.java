@@ -88,7 +88,7 @@ public class Authorizer {
             int columnCount = metaData.getColumnCount();
 
             while (resultSet.next()) {
-                if (resultSet.getString(2).equals(name) && resultSet.getInt(6)==password) {
+                if (resultSet.getString("name_client").equals(name) && resultSet.getInt("password_client")==password) {
                     ClientDTO client = new ClientDTO(
                             resultSet.getInt(1),
                             resultSet.getString(2),
