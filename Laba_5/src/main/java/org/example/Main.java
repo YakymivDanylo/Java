@@ -18,7 +18,7 @@ public class Main {
         String password = "123";
         String password2 = "234";
         String password1 = "123";
-        System.out.println(password2.hashCode());
+//        System.out.println(password2.hashCode());
 ////        AdminDTO adminDTO = new AdminDTO(1,"Danylo","surname","last_name","2005-12-26",password.hashCode());
 ////        AdminDAO adminDAO = new AdminDAO(adminDTO);
 //        Authorizer authorizer = new Authorizer();
@@ -49,9 +49,11 @@ public class Main {
         Authorizer authorizer = new Authorizer();
 //        String password = "123";
 //        String password1 = "456";
-//        AdminDTO adminDTO = new AdminDTO(1,"Danylo","Yakymiv","Romanovich","2005-12-26",password.hashCode());
+        AdminDTO adminDTO = new AdminDTO(1,"Danylo","Yakymiv","Romanovich","2005-12-26",password.hashCode());
+        AdminDAO admin = authorizer.adminAuthorization(adminDTO.getName(), adminDTO.getPassword());
+//        AdminDTO adminDTO = new AdminDTO(2,"Matviy","Yakymiv","Romanovich","20011-12-26",password2.hashCode());
 //        AdminDAO admin = authorizer.adminAuthorization(adminDTO.getName(), adminDTO.getPassword());
-////        System.out.println(password.hashCode());
+        System.out.println(password.hashCode());
 //
 //
         ClientDTO clientDTO = new ClientDTO(16,"Vova","Gorodetskiy","Vasylovich","2005-01-27",password2.hashCode(),"Makaronu");
@@ -91,7 +93,7 @@ public class Main {
 
 
         Menu menu = new Menu();
-        List<ClientDAO> clientDAOS = menu.getClients();
+//        List<ClientDAO> clientDAOS = menu.getClients();
 //        List<ClientDAO> sortedByVisiting =  Menu.sortByVisitFrequency(clientDAOS);/*1*/
 //        for (ClientDAO clientDAO : sortedByVisiting) {
 //            System.out.println(clientDAO);
@@ -106,11 +108,11 @@ public class Main {
 //        for (Order order : client.getList_orders()) {
 //            System.out.println(order);
 //        }
-
-        Menu.sortByFavoriteDish(clientDAOS);
-        for (ClientDAO clientDAO : clientDAOS) {
-            System.out.println(clientDAO);
-        }
+//        /*4*/
+//        Menu.sortByFavoriteDish(clientDAOS);
+//        for (ClientDAO clientDAO : clientDAOS) {
+//            System.out.println(clientDAO);
+//        }
 
     }
 }

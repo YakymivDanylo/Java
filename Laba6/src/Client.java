@@ -11,7 +11,7 @@ class Client implements Runnable {
     public void run() {
         for (int i = 0; i < 5; i++) {
             try {
-                Thread.sleep(100);  // Очікування між транзакціями
+                Thread.sleep(100);
                 account.deposit(100);
                 Thread.sleep(100);
                 account.withdraw(50);

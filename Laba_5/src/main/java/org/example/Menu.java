@@ -45,9 +45,8 @@ public class Menu {
     }
     public static List<ClientDAO> findClientsByEmployeeFrequency(List<ClientDAO> clients) {
         return clients.stream()
-                .filter(client -> client.getList_orders().size() > 1) // Фільтруємо клієнтів з більш ніж одним замовленням
+                .filter(client -> client.getList_orders().size() > 1)
                 .filter(client -> {
-                    // Перевіряємо, чи всі замовлення клієнта обслуговував один і той самий працівник
                     int firstEmployeeId = client.getList_orders().get(0).getEmployee().getId();
                     return client.getList_orders().stream()
                             .allMatch(order -> order.getEmployee().getId() == firstEmployeeId);

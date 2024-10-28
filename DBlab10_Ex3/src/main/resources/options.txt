@@ -1,0 +1,12 @@
+Select an option:
+1. Create Owner
+2. Create Car
+3. Create Employee
+4. Create Fine
+5. Create System
+6. Create Violation
+7. Read by key
+8. Update Car
+9. Update Employee
+10. Delete by key
+0. Exit
